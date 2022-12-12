@@ -4,14 +4,15 @@
 #include <vector>
 
 #include "vec3.h"
-#include "color.h"
 #include "ray.h"
 #include "utils.h"
 #include "sphere.h"
 #include "hittable_list.h"
 #include "camera.h"
 #include "material.h"
+#include "write_img.h"
 #include "threading/threadpool.h"
+#include "../lib/pngwriter/src/pngwriter.h"
 
 color ray_color(const ray& r, const hittable& world, int depth) {
     thread_local hit_record rec;
@@ -132,8 +133,6 @@ int main(){
     threadpool.start();
 
     // Render
-    std::cout << "P3\n" << img_width << " " << img_height << "\n255\n";
-
     std::vector<vec3> pixel_colors;
     pixel_colors.resize(img_height * img_width);
     pixel_colors[0] = vec3(0, 0, 0);
@@ -153,17 +152,15 @@ int main(){
     }
 
     while (threadpool.busy()){
-        std::cerr << "\rScanlines remaining: " << threadpool.num_jobs() << " " << std::flush;
+        std::cout << "\rScanlines remaining: " << threadpool.num_jobs() << " " << std::flush;
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     threadpool.stop();
-    std::cerr << "\rScanlines remaining: 0 " << std::flush;  // Set counter to 0 after finishing
-
-    for (int j = img_height - 1; j >= 0; --j) {
-        for (int i = 0; i < img_width; ++i)
-            write_color(std::cout, pixel_colors[j * img_width + i], samples_per_pixel);
-    }
-    std::cerr << "\nDone.\n";
+    std::cout << "\rScanlines remaining: 0 " << std::flush;  // Set counter to 0 after finishing
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    std::cerr << "Processing time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+    std::cout << "Processing time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+    pngwriter png(img_width, img_height, 0., "rendering.png");
+    write_img(pixel_colors, samples_per_pixel, png);
+    std::cout << "Done.\n";
 }
