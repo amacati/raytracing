@@ -3,3 +3,5 @@ build
 lib
 **/*.out
 **/*.ppm
+**/*.png
+!img/rendering.png

@@ -1,6 +1,6 @@
 # RayTracing
 
-![RayTracing scene](rendering.png "RayTracing scene")
+![RayTracing scene](img/rendering.png "RayTracing scene")
 
 Fine, technically it's path tracing. Whatever..
  
