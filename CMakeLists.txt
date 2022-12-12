@@ -4,14 +4,14 @@ project(RayTracing
   VERSION 1.0
   LANGUAGES CXX)
   
-add_executable(main main.cpp)
+add_executable(main src/main.cpp)
 
 find_package(PNGwriter 0.7.0)
 if(PNGwriter_FOUND)
   target_link_libraries(main PRIVATE PNGwriter::PNGwriter)
 endif(PNGwriter_FOUND)
 
-add_library(threading threading/threadpool.cpp threading/threadpool.h)
+add_library(threading src/threading/threadpool.cpp src/threading/threadpool.h)
 
 target_link_libraries(main PRIVATE threading pthread)
 
