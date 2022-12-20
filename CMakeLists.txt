@@ -19,5 +19,5 @@ target_link_libraries(main PRIVATE threading pthread)
 # C++ settings
 set(CMAKE_CXX_STANDARD 11 CACHE STRING "The C++ standard to use")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -mfma -mavx -mavx2 -g -faligned-new")
 set(CMAKE_CXX_FLAGS "-Wall")

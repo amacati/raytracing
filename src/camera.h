@@ -33,6 +33,10 @@ class camera {
 
         ray get_ray(double s, double t) const {
             vec3 rd = lens_radius * random_in_unit_disk();
+            //static const __mmask8 x_mask = 0x01 << 3;
+            //static const __mmask8 y_mask = 0x01 << 2;
+            //auto u_offset = _mm256_mask_mul_pd(u.e, x_mask, u.e, rd.e);
+            //vec3 offset = _mm256_add_pd(u_offset, _mm256_mask_mul_pd(v.e, y_mask, v.e, rd.e));
             vec3 offset = u * rd.x() + v * rd.y();
             return ray(origin + offset, lower_left_corner + s * horizontal + t * vertical - origin - offset);
         }
